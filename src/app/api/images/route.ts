@@ -10,7 +10,6 @@ const s3 = new S3Client({
 });
 
 export async function GET() {
-  const bucketName = "traffic-screenshots";
   const folderPath = "screenshots/";
 
   try {
