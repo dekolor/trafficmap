@@ -73,7 +73,7 @@ export default function TrafficMap() {
                       height={400}
                       className="w-full h-auto object-cover"
                     />
-                    <div className="p-2 bg-background/80 backdrop-blur-sm absolute bottom-0 left-0 right-0">
+                    <div className="p-2 bg-background/80 backdrop-blur-sm">
                       <p className="text-sm text-foreground/80">
                         {format(new Date(image.createdAt), "PPpp")}
                       </p>
@@ -81,13 +81,18 @@ export default function TrafficMap() {
                   </CardContent>
                 </Card>
               </DialogTrigger>
-              <DialogContent className="max-w-7xl w-full">
-                <div className="relative aspect-video">
+              <DialogContent className="max-w-[95vw] w-full sm:max-w-3xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl">
+                <div
+                  className="relative w-full"
+                  style={{ paddingTop: "56.25%" }}
+                >
                   <Image
                     src={image.url}
                     alt={`Traffic Map ${image.key}`}
                     fill
-                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 60vw"
+                    className="object-contain absolute top-0 left-0"
+                    priority
                   />
                 </div>
                 <div className="mt-2 text-center">
