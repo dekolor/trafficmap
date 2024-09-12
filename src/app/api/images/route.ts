@@ -9,6 +9,8 @@ const s3 = new S3Client({
   },
 });
 
+export const revalidate = 0;
+
 export async function GET() {
   const folderPath = "screenshots/";
 
