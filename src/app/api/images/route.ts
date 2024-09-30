@@ -9,6 +9,8 @@ const s3 = new S3Client({
   },
 });
 
+export const revalidate = 0;
+
 export async function GET() {
   const folderPath = "screenshots/";
 
@@ -27,7 +29,12 @@ export async function GET() {
       createdAt: item.LastModified?.toISOString(),
     }));
 
-    return NextResponse.json(imageUrls);
+    // Sort the imageUrls array by createdAt in descending order (newest first)
+    const sortedImageUrls = imageUrls.sort((a, b) => 
+      new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    );
+
+    return NextResponse.json(sortedImageUrls);
   } catch (error) {
     console.error("Error listing objects in S3:", error);
     return NextResponse.json(
