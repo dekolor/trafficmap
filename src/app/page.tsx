@@ -32,6 +32,15 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useMobile } from "@/hooks/use-mobile";
+import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Keyboard } from "lucide-react";
 
 interface Image {
   key: string;
@@ -50,6 +59,7 @@ export default function TrafficMapApp() {
   const [selectedImages, setSelectedImages] = useState<number[]>([]);
   const [showComparison, setShowComparison] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showShortcuts, setShowShortcuts] = useState(false);
   const isMobile = useMobile();
 
   useEffect(() => {
@@ -144,6 +154,38 @@ export default function TrafficMapApp() {
       });
     }
   };
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts({
+    escape: () => {
+      if (galleryIndex !== null) {
+        setGalleryIndex(null);
+      } else if (showComparison) {
+        setShowComparison(false);
+      } else if (comparisonMode) {
+        toggleComparisonMode();
+      }
+    },
+    c: () => {
+      toggleComparisonMode();
+    },
+    r: () => {
+      window.location.reload();
+    },
+    "?": () => {
+      setShowShortcuts(true);
+    },
+    arrowleft: () => {
+      if (galleryIndex !== null && galleryIndex > 0) {
+        setGalleryIndex(galleryIndex - 1);
+      }
+    },
+    arrowright: () => {
+      if (galleryIndex !== null && galleryIndex < filteredImages.length - 1) {
+        setGalleryIndex(galleryIndex + 1);
+      }
+    },
+  });
 
   const startComparison = () => {
     if (selectedImages.length < 2) {
@@ -346,6 +388,54 @@ export default function TrafficMapApp() {
                 {comparisonMode ? "Exit Comparison" : "Compare Maps"}
               </Button>
             )}
+
+            {/* Keyboard Shortcuts Help */}
+            <Dialog open={showShortcuts} onOpenChange={setShowShortcuts}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-slate-400 hover:text-white"
+                  title="Keyboard shortcuts (?)"
+                >
+                  <Keyboard className="h-5 w-5" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Keyboard className="h-5 w-5" />
+                    Keyboard Shortcuts
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-3 py-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">Close / Exit</span>
+                    <kbd className="px-2 py-1 bg-slate-700 rounded text-sm font-mono">Esc</kbd>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">Toggle Comparison Mode</span>
+                    <kbd className="px-2 py-1 bg-slate-700 rounded text-sm font-mono">C</kbd>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">Previous Image</span>
+                    <kbd className="px-2 py-1 bg-slate-700 rounded text-sm font-mono">←</kbd>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">Next Image</span>
+                    <kbd className="px-2 py-1 bg-slate-700 rounded text-sm font-mono">→</kbd>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">Reload Page</span>
+                    <kbd className="px-2 py-1 bg-slate-700 rounded text-sm font-mono">R</kbd>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">Show This Help</span>
+                    <kbd className="px-2 py-1 bg-slate-700 rounded text-sm font-mono">?</kbd>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </header>

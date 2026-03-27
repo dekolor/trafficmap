@@ -1,5 +1,10 @@
 # TrafficMap
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/dekolor/trafficmap/actions/workflows/ci.yml/badge.svg)](https://github.com/dekolor/trafficmap/actions/workflows/ci.yml)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Deploy](https://img.shields.io/badge/Deploy-Vercel-black)](https://vercel.com)
+
 Daily traffic-condition snapshots for Bucharest, served through a lightweight **Next.js** front-end and powered by an AWS Lambda + S3 grabber pipeline.
 
 > Built to give commuters a quick, historical view of morning rush-hour congestion without having to open Google Maps live every single day.
